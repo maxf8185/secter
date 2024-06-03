@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>{{ poll.topic }}</h1>
+
+{% for option in options %}
+<p>{{ option }} | votes: {{ option.votes }}
+    <a href="{{ url_for('option', poll_id=poll.id, option_id=option.id) }}">vote</a>
+</p>
+{% endfor %}
+{% endblock %}
