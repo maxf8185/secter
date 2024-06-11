@@ -67,3 +67,13 @@ class Option(db.Model):
 
     def __repr__(self):
         return f'Option: {self.title}'
+
+
+class Tour(db.Model):
+    id: so.MappedColumn[int] = so.mapped_column(primary_key=True)
+    title: so.MappedColumn[str] = so.mapped_column(sa.String(60))
+    description: so.MappedColumn[str] = so.mapped_column(sa.String(100))
+    price: so.MappedColumn[float]
+
+    def repr(self):
+        return f'Tour: {self.title}'

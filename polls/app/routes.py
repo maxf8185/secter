@@ -23,8 +23,13 @@ def poll(poll_id):
 
 @app.route('/option/<int:poll_id>/<int:option_id>')
 def option(poll_id, option_id):
+    poll = db.session.get(Poll, poll_id)  # poll = POLL
+    user_polls = db.session.scalars(current_user.voted_polls.select()).all() # user_polls = CURRENT_USER.POLLS
+    if poll in user_polls:
+        return '<h1>You already voted for this poll.</h1>'
     option = db.session.scalar(sa.select(Option).where(Option.id == option_id))
     option.votes += 1
+    current_user.voted_polls.add(poll)
     db.session.add(option)
     db.session.commit()
     return redirect(url_for('poll', poll_id=poll_id))
@@ -100,3 +105,10 @@ def register():
         db.session.commit()
         return redirect('login')
     return render_template('registration.html')
+
+
+@app.route('/profile')
+@login_required
+def profile():
+    user_polls = db.session.scalars(current_user.voted_polls.select())
+    return render_template('profile.html', user_polls=user_polls)
