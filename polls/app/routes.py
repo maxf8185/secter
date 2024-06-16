@@ -23,8 +23,8 @@ def poll(poll_id):
 
 @app.route('/option/<int:poll_id>/<int:option_id>')
 def option(poll_id, option_id):
-    poll = db.session.get(Poll, poll_id)  # poll = POLL
-    user_polls = db.session.scalars(current_user.voted_polls.select()).all() # user_polls = CURRENT_USER.POLLS
+    poll = db.session.get(Poll, poll_id)
+    user_polls = db.session.scalars(current_user.voted_polls.select()).all()
     if poll in user_polls:
         return '<h1>You already voted for this poll.</h1>'
     option = db.session.scalar(sa.select(Option).where(Option.id == option_id))

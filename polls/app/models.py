@@ -15,6 +15,7 @@ user_poll = sa.Table(
 )
 
 
+
 class User(UserMixin, db.Model):
     id: so.MappedColumn[int] = so.mapped_column(primary_key=True)
     username: so.MappedColumn[str] = so.mapped_column(sa.String(60))
