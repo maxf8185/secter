@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Book a Tour</h2>
+<form method="POST">
+    <div>
+        <label for="tour_id">Tour:</label>
+        <select name="tour_id" id="tour_id">
+            {% for tour in tours %}
+            <option value="{{ tour.id }}">{{ tour.name }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div>
+        <label for="user_name">Your Name:</label>
+        <input type="text" name="user_name" id="user_name" required>
+    </div>
+    <div>
+        <label for="user_email">Your Email:</label>
+        <input type="email" name="user_email" id="user_email" required>
+    </div>
+    <div>
+        <label for="booking_date">Booking Date:</label>
+        <input type="date" name="booking_date" id="booking_date" required>
+    </div>
+    <div>
+        <label for="num_people">Number of People:</label>
+        <input type="number" name="num_people" id="num_people" required>
+    </div>
+    <button type="submit">Book</button>
+</form>
+{% endblock %}
