@@ -26,3 +26,11 @@ class PostListResource(Resource):
 
 class PostResource(Resource):
     pass
+
+class PostListResource(Resource):
+    def get(self):
+        return {'id': 1}
+
+
+class PostResource(Resource):
+    pass
