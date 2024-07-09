@@ -12,7 +12,7 @@ class RegistrationForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(), Email()])
     password = PasswordField('Password', validators=[DataRequired()])
     confirmed_password = PasswordField('Confirm password', validators=[DataRequired(), EqualTo('password')])
-    submit = SubmitField('Sign up')
+    submit = SubmitField('Sing up')
 
     def validate_username(self, username):
         user = db.session.scalar(sa.select(User).where(User.username == username.data))
@@ -43,16 +43,15 @@ class RegistrationForm(FlaskForm):
 
         errors = []
         if len(password.data) < 8:
-            errors.append('Password length must be greater or equal to 8')
+            errors.append('Password length must be grater or equal than 8')
         if not validation_dct['digit']:
             errors.append('Password must contain at least one number')
         if not validation_dct['upper']:
-            errors.append('Password must contain at least one uppercase letter')
+            errors.append('Password must contain at least one upper letter')
         if not validation_dct['lower']:
-            errors.append('Password must contain at least one lowercase letter')
+            errors.append('Password must contain at least one lower letter')
         if not validation_dct['symbol']:
             errors.append('Password must contain at least one symbol')
-
         if errors:
             raise ValidationError(', '.join(errors))
 

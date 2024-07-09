@@ -7,8 +7,14 @@ from app.models import User
 
 
 @app.route('/')
+@app.route("/home")
 def home():
     return render_template('index.html')
+
+
+@app.route("/profile")
+def profile():
+    return render_template('profile.html')
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -21,7 +27,7 @@ def register():
         user.set_password(form.password.data)
         db.session.add(user)
         db.session.commit()
-        return redirect(url_for('login'))  # Перенаправлення на сторінку входу після реєстрації
+        return redirect(url_for('login'))
     return render_template('register.html', form=form)
 
 
@@ -45,7 +51,7 @@ def login():
     if form.validate_on_submit():
         user = db.session.scalar(sa.select(User).where(User.email == form.email.data))
         if user is None or not user.check_password(form.password.data):
-            return redirect(url_for('login'))  # Можна додати повідомлення про помилку
+            return redirect(url_for('login'))
         login_user(user)
         return redirect(url_for('home'))
     return render_template('login.html', form=form)

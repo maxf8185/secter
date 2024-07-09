@@ -1,5 +1,12 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1>Welcome</h1>
+<div class="container mt-5">
+        <h1 class="display-4">Welcome</h1>
+        <p class="lead">One of the most useful and promising features of AI models is that they can improve over time. We continuously ...</p>
+        <hr class="my-4">
+        <p>This site has more information. To get it, please register. If you have an account, please login.</p>
+        <a class="btn btn-primary btn-lg" href="{{ url_for('register') }}" role="button">Register</a>
+    </div>
+</div>
 {% endblock %}
