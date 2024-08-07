@@ -73,13 +73,13 @@ def register():
         db.session.add(user)
         db.session.commit()
         send_confirmation_email(user)
-        return redirect(url_for('login'))
+        return redirect(url_for('profile'))
     return render_template('register.html', title='Register', form=form)
 
 
 @app.route('/confirm-email/<token>')
 def confirm_email(token):
-    user = User.verify_token(token)  # USER or None
+    user = User.verify_token(token)
     if not user:
         return '<h1>Cannot confirm your email'
     user.is_active = True

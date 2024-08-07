@@ -12,9 +12,6 @@ def send_confirmation_email(user):
         sender='noreply@example.com',
         recipients=[user.email],
     )
-    # message.body = f'''To confirm your email visit the following link:
-    # {url_for('confirm_email', token=token, _external=True)}
-    # '''
     message.html = render_template('email_template.html', token=token)
     mail.send(message)
 
