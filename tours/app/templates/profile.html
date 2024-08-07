@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Profile</h1>
+<p>Welcome, {{ current_user.username }}</p>
+<h3>Your tours</h3>
+{% for tour in user_tours %}
+<p>{{ tour }}</p>
+{% endfor %}
+{% endblock %}

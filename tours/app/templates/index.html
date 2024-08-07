@@ -2,8 +2,14 @@
 
 {% block content %}
 <h1>WELCOME TO TOURS</h1>
-
+<h3><a href="{{ url_for('profile') }}">Profile</a></h3>
+{% for category, message in get_flashed_messages(True) %}
+<div class="alert alert-{{category}} alert-dismissible fade show" role="alert">
+  <strong></strong> {{ message }}.
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+{% endfor %}
 {% for tour in tours %}
-<p>{{ tour }} | {{ tour.time.strftime("%Y.%m.%d %H:%M") }}</p>
+<p>{{ tour }} | {{ tour.time.strftime("%Y.%m.%d %H:%M") }} <a href="{{ url_for('book_tour', tour_id=tour.id) }}">Book</a></p>
 {% endfor %}
 {% endblock %}
