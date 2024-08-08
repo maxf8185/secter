@@ -2,13 +2,17 @@ from flask_login import UserMixin
 from werkzeug.security import check_password_hash, generate_password_hash
 
 from app import db, login
+import sqlalchemy as sa
+import sqlalchemy.orm as so
+from typing import Optional
+
 
 class User(UserMixin, db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(60), unique=True, nullable=False)
-    email = db.Column(db.String(60), unique=True, nullable=False)
-    password_hash = db.Column(db.String(128), nullable=False)
-    user_posts = db.relationship('Post', back_populates='author', lazy=True)
+    id: so.MappedColumn[int] = so.mapped_column(primary_key=True)
+    username: so.MappedColumn[str] = so.mapped_column(sa.String(60), unique=True)
+    email: so.MappedColumn[str] = so.mapped_column(sa.String(60), unique=True)
+    password_hash: so.MappedColumn[Optional[str]] = so.mapped_column(sa.String(60))
+    user_posts: so.WriteOnlyMapped['Post'] = so.relationship(back_populates='author')
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
@@ -19,21 +23,29 @@ class User(UserMixin, db.Model):
     def __repr__(self):
         return self.username
 
+
 @login.user_loader
 def load_user(id):
-    return User.query.get(int(id))
+    return db.session.get(User, int(id))
+
 
 class Category(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(60), nullable=False)
-    posts = db.relationship('Post', back_populates='category', lazy=True)
+    id: so.MappedColumn[int] = so.mapped_column(primary_key=True)
+    name: so.MappedColumn[str] = so.mapped_column(sa.String(60))
+    posts: so.WriteOnlyMapped['Post'] = so.relationship(back_populates='category')
+
+    def __repr__(self):
+        return self.name
+
 
 class Post(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(100), nullable=False)
-    content = db.Column(db.Text, nullable=False)
-    category_id = db.Column(db.Integer, db.ForeignKey('category.id'), nullable=False)
-    category = db.relationship('Category', back_populates='posts')
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    author = db.relationship('User', back_populates='user_posts')
+    id: so.MappedColumn[int] = so.mapped_column(primary_key=True)
+    title: so.MappedColumn[str] = so.mapped_column(sa.String(60))
+    content: so.MappedColumn[str] = so.mapped_column(sa.Text)
+    category_id: so.Mapped[int] = so.mapped_column(sa.ForeignKey(Category.id))
+    category: so.Mapped[Category] = so.relationship(back_populates='posts')
+    user_id: so.Mapped[int] = so.mapped_column(sa.ForeignKey(User.id))
+    author: so.Mapped[User] = so.relationship(back_populates='user_posts')
 
+    def __repr__(self):
+        return f'{self.title} - {self.content}'

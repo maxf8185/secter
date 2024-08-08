@@ -3,12 +3,13 @@
 {% block content %}
 <div class="container w-75">
     <div class="card text-white border-warning bg-dark mb-3" style="max-width: 18rem;">
-        <div class="card-header">{{ current_user }}</div>
         <div class="card-body">
-            <h5 class="card-title">Light card title</h5>
-            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
-                content.</p>
+            <h5 class="card-title">{{ current_user }}</h5>
         </div>
     </div>
+
+    {% for post in user_posts %}
+    <p>{{ post }}</p>
+    {% endfor %}
 </div>
 {% endblock %}
