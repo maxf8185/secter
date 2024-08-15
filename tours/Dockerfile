@@ -13,4 +13,5 @@ RUN pip install -r requirements.txt
 
 COPY . /app/
 
-CMD python hello.py
+CMD flask db upgrade \
+    && flask run --host=0.0.0.0
